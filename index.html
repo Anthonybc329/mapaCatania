@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa cartagena</title>
+  <link rel="stylesheet" href="/assets/main.css">
+  <!-- Consulta de iconos -->
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+  <!-- API mapbox -->
+  <script src='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css' rel='stylesheet' />
+
+</head>
+<body>
+  <div class="product__map__container">
+    <!-- Incio barra lateral -->
+    <div>
+      <div class="product__map__navbar">
+        <div class="product__map__navbar__title">
+          <span>Ruta | Rutas</span> 
+        </div>
+        <div class="product__map__navbar__icons">
+          <div class="product__map__icon-container cursor-default" style="background-color: rgb(255, 0, 0);">
+            <i class="fi fi-rr-bus-alt" style="color: white;"></i>
+          </div>
+        </div>
+        <div class="product__map__navbar__selected" style="background-color: rgb(255, 0, 0);">
+          <span>Línea Roja</span> 
+          <div>
+            <!-- Switch -->
+            <div class="onoffswitch">
+              <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox">
+                <label for="myonoffswitch" class="onoffswitch-label" style="background-color: rgb(16, 227, 16);">
+                  <div class="onoffswitch-label-ball" style="right: 0px;">
+                  </div>
+                </label>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">1</span>
+            <span class="product__map__stop__name">Muelle de la Bodeguita</span>
+          </div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">2</span> 
+            <span class="product__map__stop__name">Centro de Convenciones</span>
+          </div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">3</span>
+            <span class="product__map__stop__name">Torre del Reloj</span>
+          </div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">4</span>
+            <span class="product__map__stop__name">Castillo de San Felipe de Barajas</span>
+          </div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">5</span>
+            <span class="product__map__stop__name">Museo Rafael Núñez</span>
+          </div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">6</span>
+            <span class="product__map__stop__name">Boquetillo (entrada a la Ciudad Amurallada)</span>
+          </div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">7</span>
+            <span class="product__map__stop__name">San Francisco (entrada a la Ciudad Amurallada)</span>
+          </div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">8</span>
+            <span class="product__map__stop__name">Plaza Bocagrande</span>
+          </div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">9</span>
+            <span class="product__map__stop__name">Avenida San Martín</span>
+          </div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">10</span>
+            <span class="product__map__stop__name">Casino Río</span>
+          </div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">11</span>
+            <span class="product__map__stop__name">Hotel Caribe / Playas de Bocagrande</span>
+          </div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">12</span>
+            <span class="product__map__stop__name">Hotel Hilton / El Laguito</span>
+          </div>
+          <div class="product__map__stop__container tap-highlight">
+            <span class="product__map__stop__order" style="background-color: rgb(255, 0, 0);">13</span>
+            <span class="product__map__stop__name">Iglesia de Castillo Grande</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Inicio mapa -->
+    <div style="width: 100%; height: 40rem; position: absolute">
+      <div id="map" class="mapboxgl-map" style="width: 100%; height: 100%"> <pre id='coordenadas'></pre>
+        <div class="mapboxgl-canary" style="visibility: hidden"></div>
+        <div class="mapboxgl-canvas-container mapboxgl-interactive mapboxgl-touch-pan-blocker-override mapboxgl-scrollable-page mapboxgl-touch-drag-pan mapboxgl-touch-zoom-rotate">
+          <canvas class="mapboxgl-canvas" tabindex="0" aria-label="Map" role="region" width="1022" height="800" style="width: 817.6px; height: 640px"></canvas>
+          <!-- Puntos rojos -->
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="898" aria-label="Map marker"
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(354px, 230px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+            <div class="marker-text">1</div>
+          </div>
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="899" aria-label="Map marker" 
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(376px, 239px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+            <div class="marker-text">2</div>
+          </div>
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="901" aria-label="Map marker"
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(377px, 212px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+            <div class="marker-text">3</div>
+          </div>
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="902" aria-label="Map marker"
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(475px, 206px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+            <div class="marker-text">4</div>
+          </div>
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="903" aria-label="Map marker"
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(421px, 119px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+            <div class="marker-text">5</div>
+          </div>
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="904" aria-label="Map marker"
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(363px, 138px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+            <div class="marker-text">6</div>
+          </div>
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="905" aria-label="Map marker"
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(313px, 220px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+            <div class="marker-text">7</div>
+          </div>
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="906" aria-label="Map marker"
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(339px, 345px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+            <div class="marker-text">8</div>
+          </div>
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="907" aria-label="Map marker"
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(317px, 413px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+            <div class="marker-text">9</div>
+          </div>
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="908" aria-label="Map marker"
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(263px, 473px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+              <div class="marker-text">10</div>
+          </div>
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="909" aria-label="Map marker"
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(223px, 494px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+            <div class="marker-text">11</div>
+          </div>
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="910" aria-label="Map marker"
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(237px, 536px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+            <div class="marker-text">12</div>
+          </div>
+          <div class="marker mapboxgl-marker mapboxgl-marker-anchor-center" id="911" aria-label="Map marker"
+            style="
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyBkYXRhLXYtNDY3YTllMGM9IiIgaWQ9InN2ZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHN0eWxlPSJiYWNrZ3JvdW5kOiB0cmFuc3BhcmVudDsgYm9yZGVyLXJhZGl1czogNTAlOyB0cmFuc2Zvcm06IHJvdGF0ZSgtOTBkZWcpOyI+PGNpcmNsZSByPSIyNSUiIGN4PSI1MCUiIGN5PSI1MCUiIHN0eWxlPSJzdHJva2UtZGFzaGFycmF5OiAxMDAuNSwgMTAwOyBzdHJva2U6IHJnYigyNTUsIDAsIDApOyBmaWxsOiBub25lOyBzdHJva2Utd2lkdGg6IDMyOyI+PC9jaXJjbGU+PC9zdmc+');
+            width: 32px;
+            height: 32px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            font-size: 1.3rem;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translate(324px, 467px) translate(-50%, -50%)
+            translate(0px, 0px);
+            ">
+            <div class="marker-text">13</div>
+          </div>
+        <div>
+      </div>
+    </div>
+    <!-- Botones -->
+    <div class="map-user">
+      <button class="map-user__container">
+        <span>Mi localización</span>
+      </button>
+    </div>
+  </div>
+  <div class="map-user__far">
+    <span>Su ubicación está demasiado lejos de la zona seleccionada</span>
+  </div>
+  <script src="/js/main.js"></script>
+</body>
+
+</html>
